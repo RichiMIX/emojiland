@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emojis para Copiar y Pegar Gratis | Emojiland</title>
+<meta name="description" content="Copia emojis gratis con un clic: más de 400 emojis organizados por categorías como en tu móvil. Sin registro, listos para pegar donde quieras.">
+<link rel="canonical" href="https://emojiland.example/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Emojis para Copiar y Pegar Gratis | Emojiland">
+<meta property="og:description" content="Selector de emojis online, organizado por categorías. Copia y pega sin registrarte.">
+<meta property="og:url" content="https://emojiland.example/">
+<meta name="theme-color" content="#080b09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%98%80%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="styles.css?v=20260825">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Emojiland",
+  "description": "Selector de emojis online para copiar y pegar gratis, organizado por categorías.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "¿Es gratis copiar emojis en esta web?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, completamente gratis y sin límite de uso. No hace falta crear una cuenta ni instalar ninguna aplicación." } },
+    { "@type": "Question", "name": "¿Cómo copio un emoji para pegarlo después?", "acceptedAnswer": { "@type": "Answer", "text": "Haz clic o toca el emoji que quieras. Se copia automáticamente a tu portapapeles y luego solo tienes que pegarlo donde quieras usarlo." } },
+    { "@type": "Question", "name": "¿Puedo usar los emojis en mi negocio o proyecto comercial?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Los emojis son caracteres Unicode estándar, de uso libre en cualquier contexto personal o comercial." } }
+  ]
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">😊</span>
+      <span>Emojiland</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="index.html" aria-current="page">Herramienta</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="ideas-de-uso.html">Ideas de uso</a>
+      <a href="faq.html">Preguntas frecuentes</a>
+    </nav>
+    <button type="button" class="nav-toggle" data-nav-toggle aria-label="Abrir menú" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-nav" data-mobile-nav aria-label="Navegación móvil">
+    <a href="index.html">Herramienta</a>
+    <a href="como-funciona.html">Cómo funciona</a>
+    <a href="ideas-de-uso.html">Ideas de uso</a>
+    <a href="faq.html">Preguntas frecuentes</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero container">
+    <p class="eyebrow">+400 emojis · sin registro</p>
+    <h1>Emojis para <span class="accent-text">copiar y pegar</span> gratis</h1>
+    <p class="lead">Busca, navega por categorías como en tu móvil y copia cualquier emoji con un clic. Listo para usar en WhatsApp, Instagram, cartas, documentos o donde lo necesites.</p>
+  </section>
+
+  <section class="tool-section container" data-emoji-tool>
+    <div class="glow-border tool-card">
+      <div class="glow-border-inner">
+        <div class="tool-topbar">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <label for="emoji-search" class="sr-only">Buscar emoji por nombre</label>
+            <input type="search" id="emoji-search" class="search-input" placeholder="Busca un emoji: corazón, pizza, fiesta…" data-emoji-search>
+          </div>
+          <div class="fav-pill">
+            <span>★ Favoritos: <strong data-fav-count>0</strong></span>
+            <button type="button" class="fav-download" data-fav-download disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 19h16"/></svg>
+              Descargar .txt
+            </button>
+          </div>
+        </div>
+
+        <div class="cat-tabs" role="tablist" aria-label="Categorías de emojis" data-cat-tabs></div>
+
+        <div class="emoji-grid" data-emoji-grid aria-live="polite"></div>
+        <noscript>
+          <p class="empty-state">Esta herramienta necesita JavaScript activado para copiar emojis. Actívalo en tu navegador y recarga la página.</p>
+        </noscript>
+
+        <p class="privacy-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          100% privado — todo ocurre en tu navegador, no subimos ni guardamos nada.
+        </p>
+      </div>
+    </div>
+
+    <div class="ad-slot ad-banner" role="complementary" aria-label="Espacio publicitario">
+      <div class="ad-slot-label">ANUNCIO<small>Banner horizontal</small></div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-head reveal">
+      <p class="eyebrow">En 3 pasos</p>
+      <h2>Cómo funciona</h2>
+      <p>Copiar un emoji nunca fue tan rápido. Sin instalar nada, sin crear cuenta.</p>
+    </div>
+    <div class="steps-grid" id="como-funciona">
+      <div class="glow-border step-card reveal">
+        <div class="glow-border-inner">
+          <span class="step-num">1</span>
+          <div class="step-icon" aria-hidden="true">🔍</div>
+          <h3>Busca o navega</h3>
+          <p>Escribe una palabra clave o navega por las categorías con las pestañas, igual que en tu móvil.</p>
+        </div>
+      </div>
+      <div class="glow-border step-card reveal">
+        <div class="glow-border-inner">
+          <span class="step-num">2</span>
+          <div class="step-icon" aria-hidden="true">👆</div>
+          <h3>Toca el emoji</h3>
+          <p>Haz clic o toca el emoji que quieras. Se copia al instante a tu portapapeles.</p>
+        </div>
+      </div>
+      <div class="glow-border step-card reveal">
+        <div class="glow-border-inner">
+          <span class="step-num">3</span>
+          <div class="step-icon" aria-hidden="true">📋</div>
+          <h3>Pégalo donde quieras</h3>
+          <p>Ve a tu chat, documento o red social y pégalo con Ctrl+V o manteniendo pulsado.</p>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:1.5rem;">
+      <a href="como-funciona.html" class="btn-primary">Ver la guía completa</a>
+    </p>
+  </section>
+
+  <div class="container">
+    <div class="ad-slot ad-incontent" role="complementary" aria-label="Espacio publicitario">
+      <div class="ad-slot-label">ANUNCIO<small>Bloque a mitad de contenido</small></div>
+    </div>
+  </div>
+
+  <section class="section container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Ideas de uso</p>
+      <h2>¿Para qué puedes usar estos emojis?</h2>
+      <p>Desde una carta de restaurante hasta el wifi de tu alojamiento.</p>
+    </div>
+    <div class="uses-grid">
+      <div class="glow-border use-card reveal">
+        <div class="glow-border-inner">
+          <div class="use-icon" aria-hidden="true">🍽️</div>
+          <h3>Cartas de restaurantes</h3>
+          <p>Marca platos veganos, picantes o recomendados de un vistazo.</p>
+        </div>
+      </div>
+      <div class="glow-border use-card reveal">
+        <div class="glow-border-inner">
+          <div class="use-icon" aria-hidden="true">⭐</div>
+          <h3>Reseñas y testimonios</h3>
+          <p>Ilustra las valoraciones de tus clientes en redes o en tu web.</p>
+        </div>
+      </div>
+      <div class="glow-border use-card reveal">
+        <div class="glow-border-inner">
+          <div class="use-icon" aria-hidden="true">🔑</div>
+          <h3>Llaveros para eventos</h3>
+          <p>Identifica mesas o grupos en bodas y congresos con combinaciones únicas.</p>
+        </div>
+      </div>
+      <div class="glow-border use-card reveal">
+        <div class="glow-border-inner">
+          <div class="use-icon" aria-hidden="true">📶</div>
+          <h3>Wifi para alojamientos</h3>
+          <p>Copia el emoji de wifi para el cartel de tu hotel o apartamento turístico.</p>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:1.5rem;">
+      <a href="ideas-de-uso.html" class="btn-primary">Ver todas las ideas</a>
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Dudas frecuentes</p>
+      <h2>Preguntas frecuentes</h2>
+    </div>
+    <div class="faq-list">
+      <div class="glow-border faq-item reveal">
+        <details class="glow-border-inner">
+          <summary>¿Es gratis copiar emojis en esta web?<span class="plus" aria-hidden="true">+</span></summary>
+          <p class="faq-answer">Sí, completamente gratis y sin límite de uso. No hace falta crear una cuenta.</p>
+        </details>
+      </div>
+      <div class="glow-border faq-item reveal">
+        <details class="glow-border-inner">
+          <summary>¿Cómo copio un emoji para pegarlo después?<span class="plus" aria-hidden="true">+</span></summary>
+          <p class="faq-answer">Haz clic o toca el emoji: se copia automáticamente a tu portapapeles. Después pégalo con Ctrl+V.</p>
+        </details>
+      </div>
+      <div class="glow-border faq-item reveal">
+        <details class="glow-border-inner">
+          <summary>¿Puedo usarlos en mi negocio?<span class="plus" aria-hidden="true">+</span></summary>
+          <p class="faq-answer">Sí, los emojis son caracteres Unicode de uso libre en cualquier contexto personal o comercial.</p>
+        </details>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:1.5rem;">
+      <a href="faq.html" class="btn-primary">Ver todas las preguntas</a>
+    </p>
+  </section>
+
+  <section class="section container">
+    <div class="more-pages">
+      <a class="glow-border more-page-card reveal" href="como-funciona.html">
+        <div class="glow-border-inner">
+          <span class="mp-icon" aria-hidden="true">⚙️</span>
+          <div><h3>Cómo funciona</h3><p>La guía paso a paso</p></div>
+        </div>
+      </a>
+      <a class="glow-border more-page-card reveal" href="ideas-de-uso.html">
+        <div class="glow-border-inner">
+          <span class="mp-icon" aria-hidden="true">💡</span>
+          <div><h3>Ideas de uso</h3><p>8 formas de sacarles partido</p></div>
+        </div>
+      </a>
+      <a class="glow-border more-page-card reveal" href="faq.html">
+        <div class="glow-border-inner">
+          <span class="mp-icon" aria-hidden="true">❓</span>
+          <div><h3>FAQ completa</h3><p>Todas las respuestas</p></div>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <p class="footer-note">Emojiland — selector de emojis online gratuito para copiar y pegar. Los emojis son caracteres Unicode estándar; su apariencia final depende del dispositivo o app donde los pegues.</p>
+    <nav class="footer-links" aria-label="Enlaces legales">
+      <a href="privacidad.html">Privacidad</a>
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="copy-toast" data-copy-toast aria-live="assertive"></div>
+
+<aside class="ad-corner" data-ad-corner aria-label="Espacio publicitario">
+  <button type="button" class="ad-corner-close" data-ad-corner-close aria-label="Cerrar anuncio">✕</button>
+  <div class="ad-corner-body">ANUNCIO<span>Notificación de esquina</span></div>
+</aside>
+
+<dialog class="ad-dialog" data-ad-dialog aria-label="Publicidad">
+  <div class="ad-dialog-inner">
+    <button type="button" class="ad-dialog-close" data-ad-dialog-close aria-label="Cerrar">✕</button>
+    <h3>Tu descarga ha comenzado</h3>
+    <div class="ad-slot" role="complementary" aria-label="Espacio publicitario">
+      <div class="ad-slot-label">ANUNCIO<small>Pop-up al descargar</small></div>
+    </div>
+    <div class="ad-dialog-foot">
+      <button type="button" data-ad-dialog-close-2>Cerrar y seguir</button>
+    </div>
+  </div>
+</dialog>
+
+<script defer src="lib/manifest.js"></script>
+<script defer src="main.js?v=20260825"></script>
+</body>
+</html>
