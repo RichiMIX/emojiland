@@ -17,6 +17,7 @@
   var LS_FAVS = "emojiland_favoritos";
   var SS_CORNER = "emojiland_corner_ad_dismissed";
   var SS_DOWNLOAD_AD = "emojiland_download_ad_shown";
+  var LS_COOKIE_CONSENT = "emojiland_cookie_consent";
 
   function readList(key) {
     try {
@@ -318,6 +319,37 @@
     }
   }
 
+  /* ---------- Cookie consent ---------- */
+  function initCookieConsent() {
+    var banner = $("[data-cookie-banner]");
+    if (!banner) return;
+    var acceptBtn = $("[data-cookie-accept]", banner);
+    var rejectBtn = $("[data-cookie-reject]", banner);
+
+    function announce(value) {
+      try { document.dispatchEvent(new CustomEvent("emojiland:cookies-" + value)); } catch (e) {}
+    }
+
+    var stored = null;
+    try { stored = localStorage.getItem(LS_COOKIE_CONSENT); } catch (e) {}
+
+    if (stored === "accepted" || stored === "rejected") {
+      announce(stored);
+      return;
+    }
+
+    setTimeout(function () { banner.classList.add("is-shown"); }, 900);
+
+    function decide(value) {
+      try { localStorage.setItem(LS_COOKIE_CONSENT, value); } catch (e) {}
+      banner.classList.remove("is-shown");
+      announce(value);
+    }
+
+    if (acceptBtn) acceptBtn.addEventListener("click", function () { decide("accepted"); });
+    if (rejectBtn) rejectBtn.addEventListener("click", function () { decide("rejected"); });
+  }
+
   /* ---------- View transitions on internal nav ---------- */
   function initViewTransitions() {
     if (!document.startViewTransition) return;
@@ -340,6 +372,7 @@
     safe(initEmojiTool, "initEmojiTool");
     safe(initDownloadAdDialog, "initDownloadAdDialog");
     safe(initCornerAd, "initCornerAd");
+    safe(initCookieConsent, "initCookieConsent");
     safe(initViewTransitions, "initViewTransitions");
     document.documentElement.classList.add("is-ready");
   }

@@ -109,6 +109,9 @@
 
     <div class="ad-slot ad-banner" role="complementary" aria-label="Espacio publicitario">
       <div class="ad-slot-label">ANUNCIO<small>Banner horizontal</small></div>
+
+      <!-- PEGA AQUÍ TU CODIGO DE ADSENSE. Cárgalo solo tras el consentimiento:
+           document.addEventListener("emojiland:cookies-accepted", function () { /* insertar script de anuncios aqui */ }); -->
     </div>
   </section>
 
@@ -152,6 +155,9 @@
   <div class="container">
     <div class="ad-slot ad-incontent" role="complementary" aria-label="Espacio publicitario">
       <div class="ad-slot-label">ANUNCIO<small>Bloque a mitad de contenido</small></div>
+
+      <!-- PEGA AQUÍ TU CODIGO DE ADSENSE. Cárgalo solo tras el consentimiento:
+           document.addEventListener("emojiland:cookies-accepted", function () { /* insertar script de anuncios aqui */ }); -->
     </div>
   </div>
 
@@ -274,12 +280,23 @@
     <h3>Tu descarga ha comenzado</h3>
     <div class="ad-slot" role="complementary" aria-label="Espacio publicitario">
       <div class="ad-slot-label">ANUNCIO<small>Pop-up al descargar</small></div>
+
+      <!-- PEGA AQUÍ TU CODIGO DE ADSENSE. Cárgalo solo tras el consentimiento:
+           document.addEventListener("emojiland:cookies-accepted", function () { /* insertar script de anuncios aqui */ }); -->
     </div>
     <div class="ad-dialog-foot">
       <button type="button" data-ad-dialog-close-2>Cerrar y seguir</button>
     </div>
   </div>
 </dialog>
+
+<aside class="cookie-banner" data-cookie-banner role="dialog" aria-label="Aviso de cookies">
+  <p>Usamos cookies propias (funcionamiento del sitio) y, si las aceptas, cookies de terceros para mostrar publicidad, incluida publicidad personalizada. Más información en nuestra <a href="privacidad.html">política de privacidad</a>.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn cookie-btn-reject" data-cookie-reject>Rechazar</button>
+    <button type="button" class="cookie-btn cookie-btn-accept" data-cookie-accept>Aceptar</button>
+  </div>
+</aside>
 
 <script defer src="lib/manifest.js"></script>
 <script defer src="main.js?v=20260825"></script>

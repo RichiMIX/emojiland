@@ -53,6 +53,9 @@
   <div class="container">
     <div class="ad-slot ad-banner" role="complementary" aria-label="Espacio publicitario">
       <div class="ad-slot-label">ANUNCIO<small>Banner horizontal</small></div>
+
+      <!-- PEGA AQUÍ TU CODIGO DE ADSENSE. Cárgalo solo tras el consentimiento:
+           document.addEventListener("emojiland:cookies-accepted", function () { /* insertar script de anuncios aqui */ }); -->
     </div>
   </div>
 
@@ -120,6 +123,9 @@
   <div class="container">
     <div class="ad-slot ad-incontent" role="complementary" aria-label="Espacio publicitario">
       <div class="ad-slot-label">ANUNCIO<small>Bloque a mitad de contenido</small></div>
+
+      <!-- PEGA AQUÍ TU CODIGO DE ADSENSE. Cárgalo solo tras el consentimiento:
+           document.addEventListener("emojiland:cookies-accepted", function () { /* insertar script de anuncios aqui */ }); -->
     </div>
   </div>
 
@@ -176,6 +182,14 @@
 <aside class="ad-corner" data-ad-corner aria-label="Espacio publicitario">
   <button type="button" class="ad-corner-close" data-ad-corner-close aria-label="Cerrar anuncio">✕</button>
   <div class="ad-corner-body">ANUNCIO<span>Notificación de esquina</span></div>
+</aside>
+
+<aside class="cookie-banner" data-cookie-banner role="dialog" aria-label="Aviso de cookies">
+  <p>Usamos cookies propias (funcionamiento del sitio) y, si las aceptas, cookies de terceros para mostrar publicidad, incluida publicidad personalizada. Más información en nuestra <a href="privacidad.html">política de privacidad</a>.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn cookie-btn-reject" data-cookie-reject>Rechazar</button>
+    <button type="button" class="cookie-btn cookie-btn-accept" data-cookie-accept>Aceptar</button>
+  </div>
 </aside>
 
 <script defer src="lib/manifest.js"></script>
