@@ -18,6 +18,7 @@
   var SS_CORNER = "emojiland_corner_ad_dismissed";
   var SS_DOWNLOAD_AD = "emojiland_download_ad_shown";
   var LS_COOKIE_CONSENT = "emojiland_cookie_consent";
+  var LS_SKIN_TONE = "emojiland_skin_tone";
 
   function readList(key) {
     try {
@@ -64,9 +65,19 @@
   }
 
   /* ---------- Emoji tool ---------- */
+  var TONE_OPTIONS = [
+    { id: "", label: "Tono por defecto", swatch: "" },
+    { id: "light", label: "Tono de piel claro", swatch: "\u{1F3FB}" },
+    { id: "mlight", label: "Tono de piel claro medio", swatch: "\u{1F3FC}" },
+    { id: "medium", label: "Tono de piel medio", swatch: "\u{1F3FD}" },
+    { id: "mdark", label: "Tono de piel oscuro medio", swatch: "\u{1F3FE}" },
+    { id: "dark", label: "Tono de piel oscuro", swatch: "\u{1F3FF}" }
+  ];
+
   function initEmojiTool() {
     var root = $("[data-emoji-tool]");
-    if (!root || !data.categories) return;
+    var emojiData = window.__EMOJI_DATA__;
+    if (!root || !emojiData || !emojiData.categories) return;
 
     var tabsEl = $("[data-cat-tabs]", root);
     var gridEl = $("[data-emoji-grid]", root);
@@ -74,21 +85,22 @@
     var toastEl = $("[data-copy-toast]");
     var favCountEl = $("[data-fav-count]", root);
     var favDownloadBtn = $("[data-fav-download]", root);
+    var toneEl = $("[data-skin-tones]", root);
 
-    var categories = data.categories;
+    var categories = emojiData.categories;
+    var searchIndex = emojiData.searchIndex || [];
     var activeCat = categories[0] ? categories[0].id : null;
     var recents = readList(LS_RECENTS);
     var favs = readList(LS_FAVS);
     var toastTimer = null;
+    var isSearching = false;
+    var skinTone = "";
+    try { skinTone = localStorage.getItem(LS_SKIN_TONE) || ""; } catch (e) {}
 
-    function allItemsFlat() {
-      var out = [];
-      categories.forEach(function (cat) {
-        cat.items.forEach(function (it) { out.push({ e: it[0], n: it[1], cat: cat.id }); });
-      });
-      return out;
+    function findName(emoji) {
+      var found = searchIndex.filter(function (f) { return f[0] === emoji; })[0];
+      return found ? found[1] : "emoji";
     }
-    var flat = allItemsFlat();
 
     function renderTabs() {
       if (!tabsEl) return;
@@ -110,16 +122,33 @@
         "<span>" + escHTML(label) + "</span></button>";
     }
 
+    function resolveItem(raw) {
+      if (raw.length === 3 && skinTone && raw[2][skinTone]) {
+        var t = raw[2][skinTone];
+        return { e: t[0], n: t[1] };
+      }
+      return { e: raw[0], n: raw[1] };
+    }
+
     function itemsForCat(id) {
       if (id === "recientes") {
-        return recents.map(function (e) {
-          var found = flat.filter(function (f) { return f.e === e; })[0];
-          return { e: e, n: found ? found.n : "emoji" };
-        });
+        return recents.map(function (e) { return { e: e, n: findName(e) }; });
       }
       var cat = categories.filter(function (c) { return c.id === id; })[0];
       if (!cat) return [];
-      return cat.items.map(function (it) { return { e: it[0], n: it[1] }; });
+      return cat.items.map(resolveItem);
+    }
+
+    function renderTones() {
+      if (!toneEl) return;
+      toneEl.innerHTML = TONE_OPTIONS.map(function (o) {
+        var selected = skinTone === o.id;
+        var cls = "tone-swatch" + (o.id ? " tone-swatch-" + o.id : " tone-swatch-default") + (selected ? " is-selected" : "");
+        return '<button type="button" class="' + cls + '" data-tone="' + o.id + '" aria-label="' + escHTML(o.label) +
+          '" aria-pressed="' + (selected ? "true" : "false") + '" title="' + escHTML(o.label) + '">' +
+          (o.swatch ? '<span aria-hidden="true">' + o.swatch + "</span>" : "") + "</button>";
+      }).join("");
+      toneEl.classList.toggle("is-visible", activeCat === "personas" && !isSearching);
     }
 
     function renderGrid(items) {
@@ -146,9 +175,23 @@
 
     function setActive(id) {
       activeCat = id;
+      isSearching = false;
       renderTabs();
+      renderTones();
       if (searchEl) searchEl.value = "";
       renderGrid(itemsForCat(id));
+    }
+
+    function setTone(id) {
+      skinTone = id || "";
+      try {
+        if (skinTone) localStorage.setItem(LS_SKIN_TONE, skinTone);
+        else localStorage.removeItem(LS_SKIN_TONE);
+      } catch (e) {}
+      renderTones();
+      if (activeCat === "personas" && !isSearching) {
+        renderGrid(itemsForCat("personas"));
+      }
     }
 
     function copyEmoji(emoji, name) {
@@ -213,8 +256,7 @@
     function downloadFavorites() {
       if (!favs.length) return;
       var lines = favs.map(function (e) {
-        var found = flat.filter(function (f) { return f.e === e; })[0];
-        return e + (found ? "  " + found.n : "");
+        return e + "  " + findName(e);
       });
       var content = "Mis emojis favoritos — Emojiland\n\n" + lines.join("\n") + "\n";
       var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
@@ -254,13 +296,28 @@
       });
     }
 
+    if (toneEl) {
+      toneEl.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-tone]");
+        if (!btn) return;
+        setTone(btn.getAttribute("data-tone"));
+      });
+    }
+
     if (searchEl) {
       searchEl.addEventListener("input", function () {
         var q = searchEl.value.trim().toLowerCase();
-        if (!q) { renderGrid(itemsForCat(activeCat)); return; }
-        var matches = flat.filter(function (it) {
-          return it.n.toLowerCase().indexOf(q) !== -1;
-        }).slice(0, 200);
+        if (!q) {
+          isSearching = false;
+          renderTones();
+          renderGrid(itemsForCat(activeCat));
+          return;
+        }
+        isSearching = true;
+        renderTones();
+        var matches = searchIndex.filter(function (it) {
+          return it[1].toLowerCase().indexOf(q) !== -1;
+        }).slice(0, 200).map(function (it) { return { e: it[0], n: it[1] }; });
         renderGrid(matches);
       });
     }
@@ -270,6 +327,7 @@
     }
 
     renderTabs();
+    renderTones();
     renderGrid(itemsForCat(activeCat));
     refreshFavUi();
   }

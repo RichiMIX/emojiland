@@ -248,6 +248,40 @@ ul { list-style: none; padding: 0; }
   background: var(--accent-glow-12); border-color: var(--accent-glow-25); color: var(--accent-light);
 }
 
+.tone-row {
+  display: none;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .75rem;
+  padding: .5rem .6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+}
+.tone-row.is-visible { display: flex; }
+.tone-row::before {
+  content: "Tono de piel:";
+  font-size: .74rem;
+  color: var(--text-faint);
+  font-weight: 600;
+  margin-right: .25rem;
+  white-space: nowrap;
+}
+.tone-swatch {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 1.1rem;
+  border: 2px solid transparent;
+  transition: border-color .2s var(--ease-out), transform .2s var(--ease-out);
+}
+.tone-swatch:hover { transform: scale(1.1); }
+.tone-swatch.is-selected { border-color: var(--accent-light); }
+.tone-swatch-default {
+  background: repeating-conic-gradient(#d9d9d9 0% 25%, #f5f5f5 0% 50%) 0 0 / 12px 12px;
+  border: 2px solid var(--border-strong);
+}
+.tone-swatch-default.is-selected { border-color: var(--accent-light); }
+
 .emoji-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
