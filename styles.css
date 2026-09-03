@@ -464,6 +464,45 @@ ul { list-style: none; padding: 0; }
 .use-card h3 { font-size: 1rem; margin-bottom: .45rem; }
 .use-card p { color: var(--text-dim); font-size: .88rem; }
 
+.combo-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+.combo-card { text-align: left; width: 100%; cursor: pointer; }
+.combo-card .glow-border-inner {
+  display: flex; flex-direction: column; align-items: flex-start; gap: .4rem;
+  padding: 1.25rem; height: 100%;
+  transition: background .2s var(--ease-out);
+}
+.combo-card:hover .glow-border-inner { background: rgba(255,255,255,0.03); }
+.combo-emojis { font-size: 1.7rem; line-height: 1; letter-spacing: .05em; }
+.combo-title { font-family: var(--display); font-weight: 700; font-size: .95rem; color: var(--text); }
+.combo-text { font-size: .82rem; color: var(--text-dim); }
+
+.kaomoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: .5rem;
+  max-height: 460px;
+  overflow-y: auto;
+  padding: .5rem;
+  border-radius: var(--radius-md);
+  background: rgba(0,0,0,0.15);
+}
+.kaomoji-grid::-webkit-scrollbar { width: 8px; }
+.kaomoji-grid::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }
+.kaomoji-cell {
+  display: grid; place-items: center;
+  padding: .8rem .5rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  text-align: center;
+  word-break: break-word;
+  transition: transform .18s var(--ease-bounce), background .2s var(--ease-out), border-color .2s var(--ease-out);
+}
+.kaomoji-cell:hover { background: var(--surface-strong); border-color: var(--border-strong); transform: translateY(-2px); }
+.kaomoji-cell:active { transform: scale(0.95); }
+.kaomoji-cell.is-copied { animation: pop-copied .5s var(--ease-bounce); }
+
 .seo-copy { max-width: 760px; margin-inline: auto; color: var(--text-dim); }
 .seo-copy p { margin-bottom: 1rem; }
 .seo-copy h2, .seo-copy h3 { color: var(--text); margin-top: 1.6rem; margin-bottom: .6rem; }
@@ -526,14 +565,17 @@ ul { list-style: none; padding: 0; }
 @media (min-width: 540px) {
   .steps-grid { grid-template-columns: repeat(3, 1fr); }
   .uses-grid { grid-template-columns: repeat(2, 1fr); }
+  .combo-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 720px) {
   .uses-grid { grid-template-columns: repeat(2, 1fr); }
+  .combo-grid { grid-template-columns: repeat(3, 1fr); }
   .more-pages { grid-template-columns: repeat(3, 1fr); }
   .footer-grid { flex-direction: row; justify-content: space-between; text-align: left; }
 }
 @media (min-width: 960px) {
   .uses-grid { grid-template-columns: repeat(4, 1fr); }
+  .combo-grid { grid-template-columns: repeat(4, 1fr); }
   .emoji-grid { grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); }
 }
 @media (min-width: 1280px) {
@@ -546,4 +588,5 @@ ul { list-style: none; padding: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .emoji-cell.is-copied { animation: none; background: var(--accent-glow-25); }
+  .kaomoji-cell.is-copied { animation: none; background: var(--accent-glow-25); }
 }

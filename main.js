@@ -31,6 +31,44 @@
     try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) {}
   }
 
+  /* ---------- Shared clipboard + toast helpers ---------- */
+  var toastTimer = null;
+
+  function fallbackCopy(text, cb) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      cb(ok);
+    } catch (e) { cb(false); }
+  }
+
+  function copyToClipboard(text, cb) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { cb(true); }).catch(function () {
+        fallbackCopy(text, cb);
+      });
+    } else {
+      fallbackCopy(text, cb);
+    }
+  }
+
+  function showCopyToast(display, ok) {
+    var toastEl = $("[data-copy-toast]");
+    if (!toastEl) return;
+    toastEl.innerHTML = '<span class="toast-emoji" aria-hidden="true">' + display + "</span>" +
+      '<span class="toast-check">' + (ok ? "✓ Copiado" : "No se pudo copiar") + "</span>";
+    toastEl.classList.add("is-shown");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("is-shown"); }, 1600);
+  }
+
   /* ---------- Mobile nav ---------- */
   function initMobileNav() {
     var toggle = $("[data-nav-toggle]");
@@ -82,7 +120,6 @@
     var tabsEl = $("[data-cat-tabs]", root);
     var gridEl = $("[data-emoji-grid]", root);
     var searchEl = $("[data-emoji-search]", root);
-    var toastEl = $("[data-copy-toast]");
     var favCountEl = $("[data-fav-count]", root);
     var favDownloadBtn = $("[data-fav-download]", root);
     var toneEl = $("[data-skin-tones]", root);
@@ -92,7 +129,6 @@
     var activeCat = categories[0] ? categories[0].id : null;
     var recents = readList(LS_RECENTS);
     var favs = readList(LS_FAVS);
-    var toastTimer = null;
     var isSearching = false;
     var skinTone = "";
     try { skinTone = localStorage.getItem(LS_SKIN_TONE) || ""; } catch (e) {}
@@ -194,46 +230,14 @@
       }
     }
 
-    function copyEmoji(emoji, name) {
-      var text = emoji;
-      function done(ok) {
-        showToast(emoji, ok);
+    function copyEmoji(emoji) {
+      copyToClipboard(emoji, function (ok) {
+        showCopyToast(emoji, ok);
         if (ok) {
           recents = [emoji].concat(recents.filter(function (e) { return e !== emoji; })).slice(0, 24);
           writeList(LS_RECENTS, recents);
         }
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () { done(true); }).catch(function () {
-          fallbackCopy(text, done);
-        });
-      } else {
-        fallbackCopy(text, done);
-      }
-    }
-
-    function fallbackCopy(text, cb) {
-      try {
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
-        var ok = document.execCommand("copy");
-        document.body.removeChild(ta);
-        cb(ok);
-      } catch (e) { cb(false); }
-    }
-
-    function showToast(emoji, ok) {
-      if (!toastEl) return;
-      toastEl.innerHTML = '<span class="toast-emoji" aria-hidden="true">' + emoji + "</span>" +
-        '<span class="toast-check">' + (ok ? "✓ Copiado" : "No se pudo copiar") + "</span>";
-      toastEl.classList.add("is-shown");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () { toastEl.classList.remove("is-shown"); }, 1600);
+      });
     }
 
     function toggleFav(emoji) {
@@ -292,7 +296,7 @@
         cell.classList.remove("is-copied");
         void cell.offsetWidth;
         cell.classList.add("is-copied");
-        copyEmoji(emoji, cell.getAttribute("data-name"));
+        copyEmoji(emoji);
       });
     }
 
@@ -330,6 +334,113 @@
     renderTones();
     renderGrid(itemsForCat(activeCat));
     refreshFavUi();
+  }
+
+  /* ---------- Combo packs ---------- */
+  function initCombos() {
+    var root = $("[data-combo-grid]");
+    if (!root) return;
+    root.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-combo-copy]");
+      if (!btn) return;
+      var combo = btn.getAttribute("data-combo-copy");
+      copyToClipboard(combo, function (ok) {
+        showCopyToast(combo, ok);
+      });
+    });
+  }
+
+  /* ---------- Kaomoji tool ---------- */
+  function initKaomojiTool() {
+    var root = $("[data-kaomoji-tool]");
+    var kaomojiData = window.__KAOMOJI_DATA__;
+    if (!root || !kaomojiData || !kaomojiData.categories) return;
+
+    var tabsEl = $("[data-cat-tabs]", root);
+    var gridEl = $("[data-emoji-grid]", root);
+    var searchEl = $("[data-emoji-search]", root);
+
+    var categories = kaomojiData.categories;
+    var activeCat = categories[0] ? categories[0].id : null;
+
+    function allFlat() {
+      var out = [];
+      categories.forEach(function (cat) {
+        cat.items.forEach(function (it) { out.push([it[0], it[1]]); });
+      });
+      return out;
+    }
+    var flat = allFlat();
+
+    function renderTabs() {
+      if (!tabsEl) return;
+      tabsEl.innerHTML = categories.map(function (cat) {
+        var selected = cat.id === activeCat;
+        return '<button type="button" class="cat-tab" data-cat="' + cat.id + '" role="tab" ' +
+          'aria-selected="' + (selected ? "true" : "false") + '" aria-label="' + escHTML(cat.label) + '">' +
+          '<span class="cat-tab-icon" aria-hidden="true">' + cat.icon + "</span>" +
+          "<span>" + escHTML(cat.label) + "</span></button>";
+      }).join("");
+    }
+
+    function itemsForCat(id) {
+      var cat = categories.filter(function (c) { return c.id === id; })[0];
+      return cat ? cat.items : [];
+    }
+
+    function renderGrid(items) {
+      if (!gridEl) return;
+      if (!items.length) {
+        gridEl.innerHTML = '<div class="empty-state">No se encontraron kaomoji. Prueba con otra palabra.</div>';
+        return;
+      }
+      gridEl.innerHTML = items.map(function (it) {
+        return '<button type="button" class="kaomoji-cell" data-kaomoji="' + escHTML(it[0]) +
+          '" title="' + escHTML(it[1]) + '" aria-label="Copiar kaomoji: ' + escHTML(it[1]) + '">' +
+          '<span aria-hidden="true">' + escHTML(it[0]) + "</span></button>";
+      }).join("");
+    }
+
+    function setActive(id) {
+      activeCat = id;
+      renderTabs();
+      if (searchEl) searchEl.value = "";
+      renderGrid(itemsForCat(id));
+    }
+
+    if (tabsEl) {
+      tabsEl.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-cat]");
+        if (!btn) return;
+        setActive(btn.getAttribute("data-cat"));
+      });
+    }
+
+    if (gridEl) {
+      gridEl.addEventListener("click", function (e) {
+        var cell = e.target.closest(".kaomoji-cell");
+        if (!cell) return;
+        var kaomoji = cell.getAttribute("data-kaomoji");
+        cell.classList.remove("is-copied");
+        void cell.offsetWidth;
+        cell.classList.add("is-copied");
+        copyToClipboard(kaomoji, function (ok) { showCopyToast(kaomoji, ok); });
+      });
+    }
+
+    if (searchEl) {
+      searchEl.addEventListener("input", function () {
+        var q = searchEl.value.trim().toLowerCase();
+        if (!q) { renderGrid(itemsForCat(activeCat)); return; }
+        var matches = flat.filter(function (it) {
+          return it[1].toLowerCase().indexOf(q) !== -1;
+        }).slice(0, 200);
+        renderGrid(matches);
+      });
+    }
+
+    renderTabs();
+    renderGrid(itemsForCat(activeCat));
   }
 
   /* ---------- Ad placeholders (explicitly requested, empty slots only) ---------- */
@@ -428,6 +539,8 @@
     safe(initMobileNav, "initMobileNav");
     safe(initReveals, "initReveals");
     safe(initEmojiTool, "initEmojiTool");
+    safe(initCombos, "initCombos");
+    safe(initKaomojiTool, "initKaomojiTool");
     safe(initDownloadAdDialog, "initDownloadAdDialog");
     safe(initCornerAd, "initCornerAd");
     safe(initCookieConsent, "initCookieConsent");
